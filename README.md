@@ -11,7 +11,7 @@ npm install
 ```
 - open **index.html** in the browser.
 
-### Code Structure
+## Code Structure
 
 Code has been segregated in mainly two directories: 
 
@@ -19,7 +19,7 @@ i. src
 
 ii. test
 
-#### Development
+### Source Code
 
 All the related source code has been kept under **src** folder.
 
@@ -36,6 +36,8 @@ All the related source code has been kept under **src** folder.
 - Javascript files within the project has been treated as modules so the functions can easily be imported into any other files (e.g. tests, main script).
 - JavaScript code has been written in such a way that we would be able to test them function by function.
 
+**Functions**
+
 **runClock()** : function keeps running the clock within the interval of 1s and keeps moving the hands of the clock depending upon the current time.
 
 **initClock()** : function initialises the clock for the first time and subsequently every time runClock is called within interval of 1s.
@@ -50,7 +52,7 @@ Helper functions can be found in **src/helpers/index.js** file
 
 **calculateAngle()** : function responsible for calculating the angle from value and span (per unit degree) 
 
-#### Test
+### Tests
 
 All the tests are being written through jest and the test suite can be found under **tests** folder.
 
