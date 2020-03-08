@@ -8,22 +8,14 @@
  */
 export function initialiseElements (hours, minutes, seconds, prevHours, prevMinutes) {
     if (hours !== prevHours) {  // Check if hours has changed
-        const hoursElement = getHandElement('clock__hand--hour');
-        const hoursAngle = calculateAngle(hours, 30);
-        setElementAngle(hoursElement, hoursAngle);
+        setHandElement(hours, 'hour');
         prevHours = hours;
     }
-
     if (minutes !== prevMinutes) {  // Check if minutes has changed
-        const minutesElement = getHandElement('clock__hand--minute');
-        const minutesAngle = calculateAngle(minutes, 6);
-        setElementAngle(minutesElement, minutesAngle);
+        setHandElement(minutes, 'minute');
         prevMinutes = minutes;
     }
-
-    const secondsElement = getHandElement('clock__hand--second');
-    const secondsAngle = calculateAngle(seconds, 6);
-    setElementAngle(secondsElement, secondsAngle);
+    setHandElement(seconds, 'second');
     return {
         prevHours,
         prevMinutes
@@ -31,28 +23,52 @@ export function initialiseElements (hours, minutes, seconds, prevHours, prevMinu
 }
 
 /*
- * getHandElement - Find the element in the DOM by css-class
- * @param (String) className - Name of the css-class
+ * setHandElement - Identify the type of the hand and set the angle accordingly
+ * @param (Number) value - Current hours
+ * @param (String) type - type of the hand (enum: 'hour', 'minute', 'second')
  */
-export function getHandElement (className) {
-    const el = document.getElementsByClassName(className);
-    return el && el[0] ? el[0] : null;
+export function setHandElement (value, type) {
+    let isHour, span, className;
+    switch(type) {
+        case 'hour': {
+            isHour = true;
+            span = 30;
+            className = 'clock__hand--hour';
+            break;
+        }
+        case 'minute': {
+            span = 6;
+            className = 'clock__hand--minute';
+            break;
+        }
+        case 'second': {
+            span = 6;
+            className = 'clock__hand--second';
+            break;
+        }
+    }
+    const element = findHandElement(className);
+    element.style.transform = `rotate(${calculateAngle(value, span, isHour)}deg)`;
+    return element;
 }
 
 /*
- * setElementAngle - Set the element's angle
- * @param (Object) element - HTMLElement of clock's hand
- * @param (Number) angle - Angle to be set for hand
+ * getHandElement - Find the element in the DOM by css-class
+ * @param (String) className - Name of the css-class
  */
-export function setElementAngle (element, angle) {
-    element.style.transform = `rotate(${angle}deg)`;
+export function findHandElement (className) {
+    const el = document.getElementsByClassName(className);
+    return el && el[0] ? el[0] : null;
 }
 
 /*
  * calculateAngle - Calculate the angle respective to the origin for each hand based on the value
  * @param (Number) value - Value of the time's unit (enum:  hours, minutes, seconds)
  * @param (Number) span - Unit angle for a span (360/12, 360/6)
+ * @param (Boolean) isHour - true when angle is being checked for hour value
  */
-export function calculateAngle (value, span) {
+export function calculateAngle (value, span, isHour) {
+    if (isHour && value > 12)
+        value = value - 12;
     return value*span;
 }

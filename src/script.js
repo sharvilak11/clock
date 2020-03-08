@@ -3,11 +3,10 @@ import {initialiseElements} from './helpers';
  * init - Initialise the clock
  */
 export function initClock() {
-    let prevHours = null;
-    let prevMinutes = null;
+    let prevHours, prevMinutes;
     const currentTime = new Date();
     const h = currentTime.getHours(), m=currentTime.getMinutes(), s=currentTime.getSeconds();
-    ({prevHours, prevMinutes} = initialiseElements(h, m, s, prevHours, prevMinutes));
+    ({prevHours, prevMinutes} = initialiseElements(h, m, s, prevHours, prevMinutes));   // Destructure previous values
 }
 
 /*

@@ -4,7 +4,7 @@
   "description": "A simple clock",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/sharvilak11/clock#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.8.7"
+    "@babel/preset-env": "^7.8.7",
+    "fs": "0.0.1-security",
+    "jest": "^25.1.0",
+    "path": "^0.12.7"
   }
 }
