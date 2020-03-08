@@ -25,10 +25,10 @@ describe('Angles based on time', () => {
             angle: 240
         }
     };
-    test(`angle must be ${testData.hour.angle} when hour is ${testData.hour.value}`, () => {
+    test(`angle must be ${testData.hour.angle} when hour is ${testData.hour.value}. Consider minutes to be 0`, () => {
         expect(calculateAngle(testData.hour.value, testData.hour.span, true)).toBe(testData.hour.angle);
     });
-    test(`angle must be ${testData.hour.angle} when hour is ${testData.hour.value2}`, () => {
+    test(`angle must be ${testData.hour.angle} when hour is ${testData.hour.value2}. Consider minutes to be 0`, () => {
         expect(calculateAngle(testData.hour.value2, testData.hour.span, true)).toBe(testData.hour.angle);
     });
     test(`angle must be ${testData.minute.angle} when minute is ${testData.minute.value}`, () => {
@@ -40,7 +40,9 @@ describe('Angles based on time', () => {
 });
 
 describe('Existence of hand elements in the clock', () => {
-    document.documentElement.innerHTML = html.toString();
+    beforeAll(() => {
+        document.documentElement.innerHTML = html.toString();
+    });
 
     test('there are exactly 3 hands', () => {
         const elements = document.getElementsByClassName('clock__hand');
@@ -64,24 +66,24 @@ describe('Hand elements positioning in the clock', () => {
     let testData = {    // common test data
         hour: {
             value: 6,
-            span: 30,
             angle: 180
         },
         minute: {
             value: 20,
-            span: 6,
             angle: 120
         },
         second: {
             value: 40,
-            span: 6,
             angle: 240
         }
     };
+    beforeAll(() => {
+        document.documentElement.innerHTML = html.toString();
+    });
     afterEach(() => {   // restore the original func after test
         jest.resetModules();
     });
-    test(`transform property must be set to ${testData.hour.angle} in hour hand element when hour is ${testData.hour.value}`, () => {
+    test(`transform property must be set to ${testData.hour.angle} in hour hand element when hour is ${testData.hour.value}. Consider minutes to be 0`, () => {
         const element = setHandElement(testData.hour.value, 'hour');
         expect(element.style.transform).toBe(`rotate(${testData.hour.angle}deg)`);
     });
@@ -100,38 +102,61 @@ describe('Detect change of degree in hand elements when value is changed', () =>
         hour: {
             value: 6,
             newValue: 7,
-            span: 30,
             angle: 180
         },
         minute: {
             value: 20,
             newValue: 21,
-            span: 6,
             angle: 120
         },
         second: {
             value: 40,
             newValue: 41,
-            span: 6,
             angle: 240
         }
     };
     afterEach(() => {   // restore the original func after test
         jest.resetModules();
     });
-    test('transform property should when hour gets updated', () => {
+    test('transform property should not be equal for new and previous hour when hour gets updated', () => {
         const oldValue = setHandElement(testData.hour.value, 'hour').style.transform;
         const newElement = setHandElement(testData.hour.newValue, 'hour');
         expect(newElement.style.transform).not.toBe(oldValue);
     });
-    test('transform property should when minute gets updated', () => {
+    test('transform property should not be equal for new and previous minute when minute gets updated', () => {
         const oldValue = setHandElement(testData.minute.value, 'minute').style.transform;
         const newElement = setHandElement(testData.minute.newValue, 'minute');
         expect(newElement.style.transform).not.toBe(oldValue);
     });
-    test('transform property should when second gets updated', () => {
+    test('transform property should not be equal for new and previous second when second gets updated', () => {
         const oldValue = setHandElement(testData.second.value, 'second').style.transform;
         const newElement = setHandElement(testData.second.newValue, 'second');
         expect(newElement.style.transform).not.toBe(oldValue);
     });
+});
+
+describe('Hour hand element extra deviation respective to minutes', () => {
+   let testData = {
+       hour: {
+           value: 5,
+           angle: 165   // 150 + 15 = 165
+       },
+       minute: {
+           value: 30,
+       },
+
+   };
+   beforeAll(() => {
+       document.documentElement.innerHTML = html.toString();
+   });
+    afterEach(() => {   // restore the original func after test
+        jest.resetModules();
+    });
+   test(`transform property for hour hand element should be ${testData.hour.angle} 
+         when the time is ${testData.hour.value < 10 ? '0' + testData.hour.value : testData.hour.value}: ${testData.minute.value}` , () => {
+
+       const hourElement = setHandElement(testData.hour.value, 'hour', testData.minute.value);
+       console.log(hourElement.style.transform);
+       expect(hourElement.style.transform).toBe(`rotate(${testData.hour.angle}deg)`);
+   });
 });

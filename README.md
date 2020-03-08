@@ -1,6 +1,6 @@
 # Clock
 
-A simple clock built-in vanilla js, CSS and HTML without any dependencies.
+A simple clock built-in vanilla js, CSS and HTML without any production level dependencies.
 
 ## Development Setup
 
@@ -9,6 +9,7 @@ A simple clock built-in vanilla js, CSS and HTML without any dependencies.
 ```bash
 npm install
 ```
+- open **index.html** in the browser.
 
 ### Code Structure
 
@@ -26,7 +27,14 @@ All the related source code has been kept under **src** folder.
 - style.css
 - script.js
 
-JS code has been written in such a way that we would be able to test them function by function.
+**Assumptions**
+- Time is always checked as per the system date time.
+- Extra deviation for Hour's angle is considered in the code (when time is 5:30, hour's angle will be 165 degree instead of 150 degree).
+- Extra deviation for Minute's angle is ignored since it will be negligible for each second (0.1 degree for each second).
+- Exercise is not to make it look pretty but to make it work with good code.
+- The project is a pure vanilla js based project and no extra production level dependency has been added.
+- Javascript files within the project has been treated as modules so the functions can easily be imported into any other files (e.g. tests, main script).
+- JavaScript code has been written in such a way that we would be able to test them function by function.
 
 **runClock** : function keeps running the clock within the interval of 1s and keeps moving the hands of the clock depending upon the current time.
 
@@ -34,7 +42,7 @@ JS code has been written in such a way that we would be able to test them functi
 
 Helper functions can be found in **src/helpers/index.js** file
 
-**initialiseElements** : function repsonsible for initialising hour, minute and seconds elements and keeps track of previous hour and minute values.
+**initialiseElements** : function responsible for initialising hour, minute and seconds elements and keeps track of previous hour and minute values.
 
 **setHandElement** : function responsible for setting the transform of hand according to the type of the hand.
 

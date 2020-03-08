@@ -13,6 +13,8 @@ export function initialiseElements (hours, minutes, seconds, prevHours, prevMinu
     }
     if (minutes !== prevMinutes) {  // Check if minutes has changed
         setHandElement(minutes, 'minute');
+        if (minutes > 0)
+            setHandElement(hours, 'hour', minutes); // Add deviation to the hour hand based on the variation in the minute value
         prevMinutes = minutes;
     }
     setHandElement(seconds, 'second');
@@ -25,9 +27,10 @@ export function initialiseElements (hours, minutes, seconds, prevHours, prevMinu
 /*
  * setHandElement - Identify the type of the hand and set the angle accordingly
  * @param (Number) value - Current hours
- * @param (String) type - type of the hand (enum: 'hour', 'minute', 'second')
+ * @param (String) type - Type of the hand (enum: 'hour', 'minute', 'second')
+ * @param (Number) extraDeviation - Extra Minutes which will contribute to the angle of the hour's hand
  */
-export function setHandElement (value, type) {
+export function setHandElement (value, type, extraDeviation) {
     let isHour, span, className;
     switch(type) {
         case 'hour': {
@@ -48,7 +51,11 @@ export function setHandElement (value, type) {
         }
     }
     const element = findHandElement(className);
-    element.style.transform = `rotate(${calculateAngle(value, span, isHour)}deg)`;
+    let angle = calculateAngle(value, span, isHour);
+    if (extraDeviation)
+        angle+= calculateAngle(extraDeviation, 0.5);    // When minute is more than 0, hour hand's angle should be slightly more respective to the current minutes. 30 degrees/60 minutes = 0.5 degree per min . So
+                                                              // Let say when time is 7:30, hour hand's angle should be (30*7) + (0.5*30) degrees instead of just 30 degrees, because minutes are 30.
+    element.style.transform = `rotate(${angle}deg)`;
     return element;
 }
 
@@ -57,8 +64,7 @@ export function setHandElement (value, type) {
  * @param (String) className - Name of the css-class
  */
 export function findHandElement (className) {
-    const el = document.getElementsByClassName(className);
-    return el && el[0] ? el[0] : null;
+    return document.getElementsByClassName(className)[0];
 }
 
 /*

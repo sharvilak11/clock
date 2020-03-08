@@ -21,10 +21,12 @@
     height: 65px;
     background-color: blue;
     top: 35px;
+    z-index: 2;
 }
 
 .clock__hand--second {
     width: 4px;
     background-color: red;
     left: 98px;
+    z-index: 3;
 }
