@@ -143,8 +143,7 @@ describe('Hour hand element extra deviation respective to minutes', () => {
        },
        minute: {
            value: 30,
-       },
-
+       }
    };
    beforeAll(() => {
        document.documentElement.innerHTML = html.toString();
