@@ -6,7 +6,7 @@
  * @param (Number) prevHours - Previous value of hours
  * @param (Number) prevMinutes - Previous value of minutes
  */
-export function initialiseElements (hours, minutes, seconds, prevHours, prevMinutes) {
+export function initialiseElements(hours, minutes, seconds, prevHours, prevMinutes) {
     if (hours !== prevHours) {  // Check if hours has changed
         setHandElement(hours, 'hour');
         prevHours = hours;
@@ -30,9 +30,9 @@ export function initialiseElements (hours, minutes, seconds, prevHours, prevMinu
  * @param (String) type - Type of the hand (enum: 'hour', 'minute', 'second')
  * @param (Number) extraDeviation - Extra Minutes which will contribute to the angle of the hour's hand
  */
-export function setHandElement (value, type, extraDeviation) {
+export function setHandElement(value, type, extraDeviation) {
     let isHour, span, className;
-    switch(type) {
+    switch (type) {
         case 'hour': {
             isHour = true;
             span = 30;
@@ -53,8 +53,8 @@ export function setHandElement (value, type, extraDeviation) {
     const element = findHandElement(className);
     let angle = calculateAngle(value, span, isHour);
     if (extraDeviation)
-        angle+= calculateAngle(extraDeviation, 0.5);    // When minute is more than 0, hour hand's angle should be slightly more respective to the current minutes. 30 degrees/60 minutes = 0.5 degree per min . So
-                                                              // Let say when time is 7:30, hour hand's angle should be (30*7) + (0.5*30) degrees instead of just 30 degrees, because minutes are 30.
+        angle += calculateAngle(extraDeviation, 0.5);    // When minute is more than 0, hour hand's angle should be slightly more respective to the current minutes. 30 degrees/60 minutes = 0.5 degree per min . So
+    // Let say when time is 7:30, hour hand's angle should be (30*7) + (0.5*30) degrees instead of just 30 degrees, because minutes are 30.
     element.style.transform = `rotate(${angle}deg)`;
     return element;
 }
@@ -63,7 +63,7 @@ export function setHandElement (value, type, extraDeviation) {
  * getHandElement - Find the element in the DOM by css-class
  * @param (String) className - Name of the css-class
  */
-export function findHandElement (className) {
+export function findHandElement(className) {
     return document.getElementsByClassName(className)[0];
 }
 
@@ -73,8 +73,8 @@ export function findHandElement (className) {
  * @param (Number) span - Unit angle for a span (360/12, 360/6)
  * @param (Boolean) isHour - true when angle is being checked for hour value
  */
-export function calculateAngle (value, span, isHour) {
+export function calculateAngle(value, span, isHour) {
     if (isHour && value > 12)
         value = value - 12;
-    return value*span;
+    return value * span;
 }
