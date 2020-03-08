@@ -19,8 +19,8 @@
     <div class="clock__hand clock__hand--minute"></div>
     <div class="clock__hand clock__hand--second"></div>
 </div>
-<script src="script.js"></script>
-<script>
+<script type="module">
+    import {initClock, runClock} from './script.js';
     initClock();
     runClock();
 </script>
