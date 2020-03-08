@@ -17,7 +17,7 @@ Code has been segregated in mainly two directories:
 
 i. src
 
-ii. test
+ii. tests
 
 ### Source Code
 
